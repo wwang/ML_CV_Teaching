@@ -47,7 +47,7 @@ def visualize(fig, rows, cols, imgs, titles):
         else:
             plt.imshow(img)
         plt.title(titles[i])
-        plt.show()
+    #plt.show()
 
 def convert_color(img, conv='RGB2YCrCb'):
     """
@@ -506,11 +506,13 @@ def test_slide_window(example_images, model, scaler, xy_window=(128, 128), xy_ov
                                 thick=6)
         window_img = draw_boxes(window_img, hot_windows, color=(0, 255, 0),
                                 thick=6)
+        #plt.imshow(window_img)
+        #plt.show()
         images.append(window_img)
         titles.append('')
         # print(time.time() - t1, 'seconds to process one image searching', len(windows), 'windows')
 
-    fig = plt.figure(figsize=(12, 18), dpi=300)
+    fig = plt.figure(figsize=(18, 18), dpi=300)
     visualize(fig, 5, 2, images, titles);
                                     
 # test model on one image

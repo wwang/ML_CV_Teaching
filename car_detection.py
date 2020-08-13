@@ -10,13 +10,13 @@ from moviepy.editor import VideoFileClip
 #%matplotlib inline
 
 # load images
-cars = cp.load_images('./vehicles/')
+cars = cp.load_images('../vehicles/')
 print('Number of vehicle images found: {}'.format(len(cars)))
 
-notcars = cp.load_images('./non-vehicles/')
+notcars = cp.load_images('../non-vehicles/')
 print('Number of non-vehicle images found: {}'.format(len(notcars)))
 
-searchpath = 'CarND-Vehicle-Detection/test_images/*'
+searchpath = './test_images/*'
 example_images = glob.glob(searchpath)
 print('Number of example images: {}'.format(len(example_images)))
 
@@ -63,16 +63,16 @@ is_car = cp.test_model(not_car_img, model, scaler)
 print(is_car)
 
 # show boxes and detected cars
-# cp.test_slide_window(example_images, model, scaler, xy_window=(128, 128), xy_overlap=(0.5, 0.5))
+cp.test_slide_window(example_images, model, scaler, xy_window=(128, 128), xy_overlap=(0.5, 0.5))
 
 # cp.test_slide_window(example_images, model, scaler, xy_window=(64, 64), xy_overlap=(0.5, 0.5))
 
 # video test
 # Create an instance of the videoProcessor, to be used 
 # in the process_image function
-video_processor = cp.VideoProcessor(model, scaler)
+# video_processor = cp.VideoProcessor(model, scaler)
 
-clip = VideoFileClip("./CarND-Vehicle-Detection/project_video.mp4")
-output_video = "./project_video_out.mp4"
-output_clip = clip.fl_image(lambda image: cp.process_image(image,video_processor))
-output_clip.write_videofile(output_video, audio=False)
+# clip = VideoFileClip("./CarND-Vehicle-Detection/project_video.mp4")
+# output_video = "./project_video_out.mp4"
+# output_clip = clip.fl_image(lambda image: cp.process_image(image,video_processor))
+# output_clip.write_videofile(output_video, audio=False)
