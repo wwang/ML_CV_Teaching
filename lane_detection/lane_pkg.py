@@ -126,7 +126,8 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=10):
     drawLine(img, imshape, posCoef, posIntercept, intersection, color, thickness)
     drawLine(img, imshape, negCoef, negIntercept, intersection, color, thickness)       
     
-def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
+def hough_lines(img, rho=2, theta=0.017453292519943295, threshold=15,
+                min_line_len=40, max_line_gap=20):
     """
     Returns an image with hough lines drawn.
     """
@@ -175,3 +176,10 @@ def process_image(image):
     
     result = cv2.addWeighted(image, 0.8, linesImage, 1, 0)
     return result
+
+def gen_roi_mask():
+    roiMask = np.array([[(0, imshape[0]), (465, 320), (475, 320), (imshape[1], imshape[0])]], dtype=np.int32)
+
+    return roiMask
+
+
