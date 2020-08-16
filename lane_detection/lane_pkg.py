@@ -177,7 +177,7 @@ def process_image(image):
     result = cv2.addWeighted(image, 0.8, linesImage, 1, 0)
     return result
 
-def gen_roi_mask():
+def gen_roi_mask(imshape):
     roiMask = np.array([[(0, imshape[0]), (465, 320), (475, 320), (imshape[1], imshape[0])]], dtype=np.int32)
 
     return roiMask
