@@ -786,3 +786,51 @@ def train_car_model(cars, notcars):
                               hog_feat=True, 
                               n_samples=0)
   return model, scaler
+
+def test_model(imgs, model, scaler):
+    car_idx = random.randint(0,len(imgs))
+    car_img = mpimg.imread(cars[car_idx])
+    plt.imshow(car_img)
+    is_car = test_model(car_img, model, scaler)
+    if is_car:
+        print("AI says this is a vehicle")
+    else:
+        print("AI says this is not a vehicle.")
+
+
+def test_on_static_frames(model, scaler, examples_imags, xy_window=(128,128)):
+    # with  128x128 sliding windows
+    for i in range(len(example_images)):
+        test_slide_window(example_images[i:i+1], model, scaler,
+                          xy_window, xy_overlap=(0.5, 0.5))
+
+def load_video_clip1():
+    # short video
+    clip = VideoFileClip("ExploreSTEM/vehicle_detection/test_video.mp4")
+    playvideo("ExploreSTEM/vehicle_detection/test_video.mp4")
+
+    return clip
+
+def process_video_clip1(clip, model, scaler):
+    video_processor = cp.VideoProcessor(model, scaler)
+    output_video = "./test_video_out.mp4"
+    output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
+    output_clip.write_videofile(output_video, audio=False)
+
+    playvideo(output_video)
+
+def load_video_clip2():
+    # long video
+    clip = VideoFileClip("./ExploreSTEM/vehicle_detection/project_video.mp4")
+    playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
+
+    return clip
+    
+def load_video_clip2():
+    video_processor = cp.VideoProcessor(model, scaler)
+    output_video = "./project_video_out.mp4"
+    output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
+    output_clip.write_videofile(output_video, audio=False)
+
+    playvideo(output_video)
+    
