@@ -22,6 +22,8 @@ import subprocess
 import random
 import sys
 from tqdm import tqdm
+from moviepy.editor import VideoFileClip
+from IPython.display import HTML
 
 
 # load all images
