@@ -803,7 +803,7 @@ def test_model_on_random_iage(cars, notcars, model, scaler):
         print("AI says this is not a vehicle.")
 
 
-def test_on_static_frames(model, scaler, examples_images, xy_window=(128,128)):
+def test_on_static_frames(model, scaler, example_images, xy_window=(128,128)):
     # with  128x128 sliding windows
     for i in range(len(example_images)):
         test_slide_window(example_images[i:i+1], model, scaler,
