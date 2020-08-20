@@ -829,7 +829,7 @@ def process_video_clip1(clip, model, scaler):
 
     return output_video
 
-def load_video_clip2():
+def load_video_clip3():
     # long video
     clip2_path = "./ExploreSTEM/vehicle_detection/project_video.mp4"
     clip = VideoFileClip("./ExploreSTEM/vehicle_detection/project_video.mp4")
@@ -837,9 +837,28 @@ def load_video_clip2():
 
     return clip, clip2_path
     
-def process_video_clip2(clip, model, scaler):
+def process_video_clip3(clip, model, scaler):
     video_processor = VideoProcessor(model, scaler)
     output_video = "./project_video_out.mp4"
+    output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
+    output_clip.write_videofile(output_video, audio=False)
+
+    #playvideo(output_video)
+
+    return (output_video)
+
+
+def load_video_clip2():
+    # long video
+    clip2_path = "./ExploreSTEM/vehicle_detection/Shorter video.mp4"
+    clip = VideoFileClip(clip2_path)
+    #playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
+
+    return clip, clip2_path
+    
+def process_video_clip2(clip, model, scaler):
+    video_processor = VideoProcessor(model, scaler)
+    output_video = "./shorter_video_out.mp4"
     output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
     output_clip.write_videofile(output_video, audio=False)
 
