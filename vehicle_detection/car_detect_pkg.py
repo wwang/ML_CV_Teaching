@@ -789,7 +789,7 @@ def train_car_model(cars, notcars):
 
 def test_model_on_random_iage(imgs, model, scaler):
     car_idx = random.randint(0,len(imgs))
-    car_img = mpimg.imread(cars[car_idx])
+    car_img = mpimg.imread(imgs[car_idx])
     plt.imshow(car_img)
     is_car = test_model(car_img, model, scaler)
     if is_car:
