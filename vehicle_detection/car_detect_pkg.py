@@ -837,7 +837,7 @@ def load_video_clip2():
 
     return clip, clip2_path
     
-def load_video_clip2():
+def process_video_clip2(clip, model, scaler):
     video_processor = VideoProcessor(model, scaler)
     output_video = "./project_video_out.mp4"
     output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
