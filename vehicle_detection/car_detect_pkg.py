@@ -825,7 +825,9 @@ def process_video_clip1(clip, model, scaler):
     output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
     output_clip.write_videofile(output_video, audio=False)
 
-    playvideo(output_video)
+    #playvideo(output_video)
+
+    return output_video
 
 def load_video_clip2():
     # long video
@@ -841,5 +843,7 @@ def load_video_clip2():
     output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
     output_clip.write_videofile(output_video, audio=False)
 
-    playvideo(output_video)
+    #playvideo(output_video)
+
+    return (output_video)
     
