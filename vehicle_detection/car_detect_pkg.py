@@ -11,8 +11,6 @@ from collections import deque
 from scipy.ndimage.measurements import label
 import io
 import base64
-from IPython.display import HTML
-
 from skimage.feature import hog
 from sklearn.svm import LinearSVC
 from sklearn.preprocessing import StandardScaler
@@ -20,6 +18,11 @@ from sklearn.preprocessing import StandardScaler
 # for scikit-learn >= 0.18 use:
 # from sklearn.model_selection import train_test_split
 from sklearn.model_selection import train_test_split
+import subprocess
+import random
+import sys
+from tqdm import tqdm
+
 
 # load all images
 def load_images(basedir):
@@ -274,14 +277,20 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32), hist_bins=3
     Extract the features of a list of images.
     """
     features = []
-    for file in imgs:
-        image = mpimg.imread(file)
-        img_features = single_img_features(image, color_space, spatial_size,
+    with tqdm(total=len(imgs), file=sys.stdout) as pbar:
+      count=0
+      for file in imgs:
+          image = mpimg.imread(file)
+          img_features = single_img_features(image, color_space, spatial_size,
                         hist_bins, orient, 
                         pix_per_cell, cell_per_block, hog_channel,
                         spatial_feat, hist_feat, hog_feat, vis=False)
             
-        features.append(img_features)
+          features.append(img_features)
+
+          count += 1
+          pbar.set_description('processed: %d' % (count))
+          pbar.update(1)
     return features
 
 def train_model(cars, notcars,
@@ -306,28 +315,33 @@ def train_model(cars, notcars,
     else:
         test_cars = cars
         test_notcars = notcars
-
+    print("Extracting car photo features...")
     car_features = extract_features(test_cars, color_space=color_space, 
                             spatial_size=spatial_size, hist_bins=hist_bins, 
                             orient=orient, pix_per_cell=pix_per_cell, 
                             cell_per_block=cell_per_block, 
                             hog_channel=hog_channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)
+    print("Done")
+    print("Extracting non-car photo features...")
     notcar_features = extract_features(test_notcars, color_space=color_space, 
                             spatial_size=spatial_size, hist_bins=hist_bins, 
                             orient=orient, pix_per_cell=pix_per_cell, 
                             cell_per_block=cell_per_block, 
                             hog_channel=hog_channel, spatial_feat=spatial_feat, 
                             hist_feat=hist_feat, hog_feat=hog_feat)
+    print("Done")
     t_features = time.time() - t
     
+    print("Normalizing the features ... ", end='')
     # Normalize features
     X = np.vstack((car_features, notcar_features)).astype(np.float64)
     
     X_scaler = StandardScaler().fit(X)
     scaled_X = X_scaler.transform(X)
+    print("Done")
 
-
+    print("Training the model ...", end='')
     # Define the labels vector
     y = np.hstack((np.ones(len(car_features)), np.zeros(len(notcar_features))))
 
@@ -339,6 +353,7 @@ def train_model(cars, notcars,
     t = time.time()
     svc.fit(X_train, y_train)
     t_training = round(time.time() - t, 2)
+    print("Done")
     
     # computes the accuracy
     accuracy = round(svc.score(X_test, y_test), 4)
@@ -685,3 +700,89 @@ def playvideo(filename):
     return HTML(data='''<video alt="test" controls>
                     <source src="data:video/mp4;base64,{0}" type="video/mp4"/>
                  </video>'''.format(encoded.decode('ascii')))
+
+def download_data():
+  # download vehicle photos
+  dw_cmd1 = ["wget", "https://tinyurl.com/y39psq9c", 
+  "-O", "vehicles.zip"]
+  output = subprocess.Popen(dw_cmd1, stdout=subprocess.PIPE,
+                   stderr=subprocess.STDOUT)
+  stdout,stderr=output.communicate()
+  #print(stdout.decode())
+  if not (stderr is None):
+    print(stderr.decode())
+
+  # unzip vehicle photos
+  unzip_cmd1=["unzip", "vehicles.zip"]
+  output = subprocess.Popen(unzip_cmd1, stdout=subprocess.PIPE,
+                   stderr=subprocess.STDOUT)
+  stdout,stderr=output.communicate()
+  print("Vehicle files downloaded and unzipped")
+  if not (stderr is None):
+    print(stderr.decode())
+
+  # download non-vehicle photos
+  dw_cmd1 = ["wget", "https://tinyurl.com/y2ary7q7", 
+  "-O", "non-vehicles.zip"]
+  output = subprocess.Popen(dw_cmd1, stdout=subprocess.PIPE,
+                   stderr=subprocess.STDOUT)
+  stdout,stderr=output.communicate()
+  #print(stdout.decode())
+  if not (stderr is None):
+    print(stderr.decode())
+
+  # unzip non-vehicle photos
+  unzip_cmd1=["unzip", "non-vehicles.zip"]
+  output = subprocess.Popen(unzip_cmd1, stdout=subprocess.PIPE,
+                   stderr=subprocess.STDOUT)
+  stdout,stderr=output.communicate()
+  print("Non-vehicle file downloaded and unzipped")
+  if not (stderr is None):
+    print(stderr.decode())
+
+def load_training_images():
+  # load vehicle images
+  cars = load_images('./vehicles/')
+  print('Number of vehicle images found: {}'.format(len(cars)))
+
+  # load non vehicle images
+  notcars = load_images('./non-vehicles/')
+  print('Number of non-vehicle images found: {}'.format(len(notcars)))
+
+  # load images for testing
+  searchpath = 'ExploreSTEM/vehicle_detection/test_images/*'
+  example_images = glob.glob(searchpath)
+  print('Number of example images: {}'.format(len(example_images)))
+
+  return cars, notcars, example_images
+
+def show_random_car_image(cars):
+  car_idx = random.randint(0,len(cars))
+  car_img = mpimg.imread(cars[car_idx])
+  car_feature_img = show_features(car_img)
+  print("Showing one random car image:")
+  plt.imshow(car_img)
+  plt.show()
+  plt.imshow(car_feature_img)
+
+def show_random_notcar_image(notcars):
+  # show the features of the above non-vehicle picture
+  not_car_idx = random.randint(0,len(notcars))
+  not_car_img = mpimg.imread(notcars[not_car_idx])
+  not_car_feature_img = show_features(not_car_img)
+  print("Showing one random not car image:")
+  plt.imshow(not_car_img)
+  plt.show()
+  plt.imshow(not_car_feature_img)
+
+def train_car_model(cars, notcars):
+  model, scaler = train_model(cars, notcars,
+                              color_space='YCrCb',
+                              spatial_size=(16, 16), hist_bins=32,
+                              orient=12, 
+                              pix_per_cell=8, cell_per_block=2,
+                              hog_channel='ALL', spatial_feat=True, 
+                              hist_feat=True, 
+                              hog_feat=True, 
+                              n_samples=0)
+  return model, scaler
