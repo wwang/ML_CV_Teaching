@@ -787,7 +787,12 @@ def train_car_model(cars, notcars):
                               n_samples=0)
   return model, scaler
 
-def test_model_on_random_iage(imgs, model, scaler):
+def test_model_on_random_iage(cars, notcars, model, scaler):
+    if random.choice([True, False]):
+        imgs = cars
+    else:
+        imgs = notcars
+    
     car_idx = random.randint(0,len(imgs))
     car_img = mpimg.imread(imgs[car_idx])
     plt.imshow(car_img)
