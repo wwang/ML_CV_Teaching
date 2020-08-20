@@ -850,7 +850,7 @@ def process_video_clip3(clip, model, scaler):
 
 def load_video_clip2():
     # long video
-    clip2_path = "./ExploreSTEM/vehicle_detection/Shorter video.mp4"
+    clip2_path = "./ExploreSTEM/vehicle_detection/Shorter Video.mp4"
     clip = VideoFileClip(clip2_path)
     #playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
 
