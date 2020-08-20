@@ -813,13 +813,14 @@ def test_on_static_frames(model, scaler, example_images, xy_window=(128,128)):
 
 def load_video_clip1():
     # short video
-    clip = VideoFileClip("ExploreSTEM/vehicle_detection/test_video.mp4")
-    playvideo("ExploreSTEM/vehicle_detection/test_video.mp4")
+    clip1_path = "ExploreSTEM/vehicle_detection/test_video.mp4"
+    clip = VideoFileClip(clip1_path)
+    #playvideo("ExploreSTEM/vehicle_detection/test_video.mp4")
 
-    return clip
+    return clip, clip1_path
 
 def process_video_clip1(clip, model, scaler):
-    video_processor = cp.VideoProcessor(model, scaler)
+    video_processor = VideoProcessor(model, scaler)
     output_video = "./test_video_out.mp4"
     output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
     output_clip.write_videofile(output_video, audio=False)
@@ -828,13 +829,14 @@ def process_video_clip1(clip, model, scaler):
 
 def load_video_clip2():
     # long video
+    clip2_path = "./ExploreSTEM/vehicle_detection/project_video.mp4"
     clip = VideoFileClip("./ExploreSTEM/vehicle_detection/project_video.mp4")
-    playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
+    #playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
 
-    return clip
+    return clip, clip2_path
     
 def load_video_clip2():
-    video_processor = cp.VideoProcessor(model, scaler)
+    video_processor = VideoProcessor(model, scaler)
     output_video = "./project_video_out.mp4"
     output_clip = clip.fl_image(lambda image: process_image(image,video_processor))
     output_clip.write_videofile(output_video, audio=False)
