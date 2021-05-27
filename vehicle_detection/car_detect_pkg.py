@@ -752,7 +752,7 @@ def load_training_images():
   print('Number of non-vehicle images found: {}'.format(len(notcars)))
 
   # load images for testing
-  searchpath = 'ExploreSTEM/vehicle_detection/test_images/*'
+  searchpath = 'ML_CV_Teaching/vehicle_detection/test_images/*'
   example_images = glob.glob(searchpath)
   print('Number of example images: {}'.format(len(example_images)))
 
@@ -813,9 +813,9 @@ def test_on_static_frames(model, scaler, example_images, xy_window=(128,128)):
 
 def load_video_clip1():
     # short video
-    clip1_path = "ExploreSTEM/vehicle_detection/test_video.mp4"
+    clip1_path = "ML_CV_Teaching/vehicle_detection/test_video.mp4"
     clip = VideoFileClip(clip1_path)
-    #playvideo("ExploreSTEM/vehicle_detection/test_video.mp4")
+    #playvideo("ML_CV_Teaching/vehicle_detection/test_video.mp4")
 
     return clip, clip1_path
 
@@ -831,9 +831,9 @@ def process_video_clip1(clip, model, scaler):
 
 def load_video_clip2():
     # long video
-    clip2_path = "./ExploreSTEM/vehicle_detection/project_video.mp4"
-    clip = VideoFileClip("./ExploreSTEM/vehicle_detection/project_video.mp4")
-    #playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
+    clip2_path = "./ML_CV_Teaching/vehicle_detection/project_video.mp4"
+    clip = VideoFileClip("./ML_CV_Teaching/vehicle_detection/project_video.mp4")
+    #playvideo("./ML_CV_Teaching/vehicle_detection/project_video.mp4")
 
     return clip, clip2_path
     
@@ -850,9 +850,9 @@ def process_video_clip2(clip, model, scaler):
 
 def load_video_clip3():
     # long video
-    clip2_path = "./ExploreSTEM/vehicle_detection/Shorter Video.mp4"
+    clip2_path = "./ML_CV_Teaching/vehicle_detection/Shorter Video.mp4"
     clip = VideoFileClip(clip2_path)
-    #playvideo("./ExploreSTEM/vehicle_detection/project_video.mp4")
+    #playvideo("./ML_CV_Teaching/vehicle_detection/project_video.mp4")
 
     return clip, clip2_path
     
