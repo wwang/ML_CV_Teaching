@@ -43,6 +43,12 @@ def show_hsv_dist(img):
     fig.set_figwidth(12) # 2.75in or 7cm
     axis = fig.add_subplot(1, 1, 1, projection="3d")
 
+    # extract the total number of pixels
+    pixel_colors = img.reshape((np.shape(img)[0]*np.shape(img)[1], 3))
+    norm = colors.Normalize(vmin=-1.,vmax=1.)
+    norm.autoscale(pixel_colors)
+    pixel_colors = norm(pixel_colors).tolist()
+
     axis.scatter(h.flatten(), s.flatten(), v.flatten(), facecolors=pixel_colors, marker=".")
     axis.set_xlabel("Hue")
     axis.set_ylabel("Saturation")
