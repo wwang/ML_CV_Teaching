@@ -47,7 +47,7 @@ def string_to_one_hot(data, vocabulary):
   return np.array(out)
 
 # Converts a sequence (array) of one-hot encoded vectors back into the string based on the provided vocabulary.
-def devectorization(sequence, vocabulary):
+def devectorize(sequence, vocabulary):
     index_to_char = {index: char for index, char in enumerate(vocabulary)}
     strings = []
     for char_vector in sequence:
@@ -57,7 +57,7 @@ def devectorization(sequence, vocabulary):
 
 
 # Train data set verification
-def dataset_verification(x, y):
+def dataset_verification(x, y, vocabulary):
   print('x.shape: ', x.shape) # (input_sequences_num, input_sequence_length, supported_symbols_num)
   print('y.shape: ', y.shape) # (output_sequences_num, output_sequence_length, supported_symbols_num)
 
