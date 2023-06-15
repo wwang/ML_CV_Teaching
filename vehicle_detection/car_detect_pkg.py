@@ -789,7 +789,7 @@ def train_car_model(cars, notcars):
                               n_samples=0)
   return model, scaler
 
-def test_model_on_random_iage(cars, notcars, model, scaler):
+def test_model_on_random_image(cars, notcars, model, scaler):
     if random.choice([True, False]):
         imgs = cars
     else:
